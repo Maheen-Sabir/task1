@@ -46,6 +46,25 @@ def div():
         return make_response('Invalid input\n', 400) #HTTP 400 BAD REQUEST
 #Endpoint /mod for modulo which takes a and b as query parameters. Returns HTTP 400 BAD REQUEST also for division by zero.
 
+@app.route('/mod')
+def modulo():
+    a = request.args.get('a')
+    b = request.args.get('b')
+
+    if a is None or b is None:
+        # missing parameters
+        abort(400, description="'a' and 'b' query parameters are required")
+    elif not is_number(a) or not is_number(b):
+        # non-numeric input
+        abort(400, description="'a' and 'b' must be valid numbers")
+    elif float(b) == 0.0:
+        # modulo (division) by zero
+        abort(400, description="Modulo by zero is not allowed")
+    else:
+        result = float(a) % float(b)
+        return jsonify({"result": result})
+=======
+
 #Endpoint /random which takes a and b as query parameters and returns a random number between a and b included. Returns HTTP 400 BAD REQUEST if a is greater than b.
 
 if __name__ == '__main__':
